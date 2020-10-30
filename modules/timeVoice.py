@@ -30,7 +30,7 @@ class TimeVoice:
             voiceCSV=await self.csv(inVoice=inVoice)
             if not voiceCSV is None:
                 for id in inVoice:
-                    member=utils.get(self.self2.guilds[0].members,id=id)
+                    member=await self.self2.guilds[0].fetch_member(id)
                     for role in member.roles:
                         if role.id in self.roles:
                             await self.self2.iEconomy.add(member.id,self.roles[role.id])
@@ -40,10 +40,7 @@ class TimeVoice:
                     if voiceCSV.loc[id,"time"]/60 in self.money_rewards:
                         count=voiceCSV.loc[id,"time"]//60
                         await self.self2.iEconomy.add(id,self.money_rewards[count])
-                log.debug(voiceCSV,extra=extra)
                 voiceCSV.to_csv("db/voice.csv",sep=",")
-            log.debug(f"\n---\n{inVoice}\n---\n",extra=extra)
-            log.debug(voiceCSV,extra=extra)
         await self.self2.iGlobalTimer.add(60,self.voice(True))
     async def csv(self,id=None,inVoice=None):
         #voiceCSV=pandas.read_csv("db/voice.csv",sep=",")

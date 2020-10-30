@@ -188,7 +188,7 @@ class Duels:
             else:
                 position=f"#{position}"
             try:
-                member=utils.get(self.self2.guilds[0].members,id=id).display_name
+                member=(await self.self2.guilds[0].fetch_member(id)).display_name
             except:
                 member=self.self2.config._replics["duelsTopNoneUser"]
             embed.add_field(
@@ -265,57 +265,52 @@ class Duels:
             try:
                 id=int(args[0][3:-1])
                 ids=set()
-                for member in self.self2.guilds[0].members:
-                    ids.add(member.id)
-                if id in ids:
-                    if not id==authorID:
-                        if not id==self.self2.user.id:
-                            if not id in self.duelsDict:
-                                if not authorID in self.duelsDict:
-                                    error=False
-                                else:
-                                    if self.duelsDict[authorID]["status"]=="sended":
-                                        await channel.send(self.self2.config._replics["duels1PAlreadyRequest"].format(
-                                            user=f"<@!{self.duelsDict[authorID]['opponent']}>",
-                                        ))
-                                        # вам уже послали запрос на дуэль
-                                    elif self.duelsDict[authorID]["status"]=="wait":
-                                        await channel.send(self.self2.config._replics["duels1PAlreadySendRequest"].format(
-                                            user=f"<@!{self.duelsDict[authorID]['opponent']}>",
-                                        ))
-                                        # вы уже послали запрос на дуэль
-                                    else:
-                                        await channel.send(self.self2.config._replics["duels1PAlreadyIn"].format(
-                                            user=f"<@!{authorID}>",
-                                            user2=f"<@!{self.duelsDict[authorID]['opponent']}>",
-                                        ))
-                                        # вы уже в дуэли
+                self.self2.guilds[0].fetch_member(id)
+                if not id==authorID:
+                    if not id==self.self2.user.id:
+                        if not id in self.duelsDict:
+                            if not authorID in self.duelsDict:
+                                error=False
                             else:
-                                if self.duelsDict[id]["status"]=="sended":
-                                    await channel.send(self.self2.config._replics["duels2PAlreadyRequest"].format(
-                                        user=f"<@!{id}>",
-                                        user2=f"<@!{self.duelsDict[id]['opponent']}>",
+                                if self.duelsDict[authorID]["status"]=="sended":
+                                    await channel.send(self.self2.config._replics["duels1PAlreadyRequest"].format(
+                                        user=f"<@!{self.duelsDict[authorID]['opponent']}>",
                                     ))
-                                    # пользователю уже послали запрос на дуэль
-                                elif self.duelsDict[id]["status"]=="wait":
-                                    await channel.send(self.self2.config._replics["duels2PAlreadySendRequest"].format(
-                                        user=f"<@!{id}>",
+                                    # вам уже послали запрос на дуэль
+                                elif self.duelsDict[authorID]["status"]=="wait":
+                                    await channel.send(self.self2.config._replics["duels1PAlreadySendRequest"].format(
+                                        user=f"<@!{self.duelsDict[authorID]['opponent']}>",
                                     ))
-                                    # пользователь уже послал запрос на дуэль другому игроку
+                                    # вы уже послали запрос на дуэль
                                 else:
-                                    await channel.send(self.self2.config._replics["duels2PAlreadyIn"].format(
-                                        user=f"<@!{id}>",
+                                    await channel.send(self.self2.config._replics["duels1PAlreadyIn"].format(
+                                        user=f"<@!{authorID}>",
+                                        user2=f"<@!{self.duelsDict[authorID]['opponent']}>",
                                     ))
-                                    # пользователь уже в дуэли
+                                    # вы уже в дуэли
                         else:
-                            await channel.send(self.self2.config._replics["duelsSendBot"])
-                            # бот не может быть соперником
+                            if self.duelsDict[id]["status"]=="sended":
+                                await channel.send(self.self2.config._replics["duels2PAlreadyRequest"].format(
+                                    user=f"<@!{id}>",
+                                    user2=f"<@!{self.duelsDict[id]['opponent']}>",
+                                ))
+                                # пользователю уже послали запрос на дуэль
+                            elif self.duelsDict[id]["status"]=="wait":
+                                await channel.send(self.self2.config._replics["duels2PAlreadySendRequest"].format(
+                                    user=f"<@!{id}>",
+                                ))
+                                # пользователь уже послал запрос на дуэль другому игроку
+                            else:
+                                await channel.send(self.self2.config._replics["duels2PAlreadyIn"].format(
+                                    user=f"<@!{id}>",
+                                ))
+                                # пользователь уже в дуэли
                     else:
-                        await channel.send(self.self2.config._replics["duelsSendMyself"])
-                        # вы не можете начать дуэль с собой
+                        await channel.send(self.self2.config._replics["duelsSendBot"])
+                        # бот не может быть соперником
                 else:
-                    await channel.send(self.self2.config._replics["duelsUserNotFound"])
-                    # пользователь не найден
+                    await channel.send(self.self2.config._replics["duelsSendMyself"])
+                    # вы не можете начать дуэль с собой
             except:
                 await channel.send(self.self2.config._replics["duelsUserNotFound"])
                 # пользователь не найден

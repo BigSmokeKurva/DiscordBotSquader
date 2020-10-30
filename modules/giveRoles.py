@@ -15,11 +15,11 @@ class GiveRoles:
             self.roles.setdefault(items[0],int(items[1]))
     async def add(self,payload):
         role=utils.get(self.self2.guilds[0].roles,id=self.roles[str(payload.emoji)])
-        member=utils.get(self.self2.guilds[0].members,id=payload.user_id)
+        member=await self.self2.guilds[0].fetch_member(payload.user_id)
         log.info(f"{member.id} выдана роль {role}",extra=extra)
         await member.add_roles(role)
     async def remove(self,payload):
         role=utils.get(self.self2.guilds[0].roles,id=self.roles[str(payload.emoji)])
-        member=utils.get(self.self2.guilds[0].members,id=payload.user_id)
+        member=await self.self2.guilds[0].fetch_member(payload.user_id)
         log.info(f"{member.id} удалена роль {role}",extra=extra)
         await member.remove_roles(role)

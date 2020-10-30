@@ -68,7 +68,7 @@ class PersonalVoiceChannels:
             lenChannel=len(str(channel))
             if lenChannel!=1:
                 channel=self.self2.get_channel(channel)
-                member=utils.get(self.self2.guilds[0].members,id=id)
+                member=await self.self2.guilds[0].fetch_member(id)
                 if member in channel.members:
                     await member.move_to(self.self2.get_channel(self.self2.config.pvc_runChannel))
                     await channelB.send(self.self2.config._replics["pvcKickSuccessfully"].format(

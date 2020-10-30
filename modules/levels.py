@@ -118,7 +118,7 @@ class Levels:
             else:
                 position=f"#{position}"
             try:
-                member=utils.get(self.self2.guilds[0].members,id=id).display_name
+                member=(await self.self2.guilds[0].fetch_member(id)).display_name
             except:
                 member=self.self2.config._replics["levelsTopNoneUser"]
             embed.add_field(

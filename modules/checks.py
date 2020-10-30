@@ -17,7 +17,7 @@ class Checks:
             self.admMembers.append(int(id))
     async def admCheck(self,member=None,id=None):
         if not member:
-            member=utils.get(self.self2.guilds[0].members,id=id)
+            member=self.self2.guilds[0].fetch_member(id)
         if not id:
             id=member.id
         if id in self.admMembers:
@@ -29,18 +29,12 @@ class Checks:
         if len(args)!=0 and len(args[0])==22:
             try:
                 id=int(args[0][3:-1])
-                ids=set()
-                for member in self.self2.guilds[0].members:
-                    ids.add(member.id)
-                if id in ids:
-                    if not id==self.self2.user.id:
-                        return id,False
-                    else:
-                        await channel.send(self.self2.config._replics["checksSendBot"]) ###
-                        # у бота нет статистики
+                self.self2.guilds[0].fetch_member(id)
+                if not id==self.self2.user.id:
+                    return id,False
                 else:
-                    await channel.send(self.self2.config._replics["checksUserNotFound"]) ###
-                    # не найден
+                    await channel.send(self.self2.config._replics["checksSendBot"]) ###
+                    # у бота нет статистики
             except:
                 await channel.send(self.self2.config._replics["checksUserNotFound"]) ###
                 # не найден

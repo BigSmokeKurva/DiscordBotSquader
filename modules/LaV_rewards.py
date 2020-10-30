@@ -27,7 +27,7 @@ class LevelsAndVoiceRewards:
         for items in self.roles:
             if level>=items["level"] and time>=items["time"]:
                 role    =   utils.get(self.self2.guilds[0].roles,id=items["role"])
-                member  =   utils.get(self.self2.guilds[0].members,id=id)
+                member  =   await self.self2.guilds[0].fetch_member(id)
                 if not role in member.roles:
                     await member.add_roles(role)
                     log.info(f"{member.id} выдана роль {role}",extra=extra)

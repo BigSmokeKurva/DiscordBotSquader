@@ -36,7 +36,7 @@ class BuyRole:
         if not error:
             balance=await self.self2.iEconomy.csv(id)
             role=utils.get(self.self2.guilds[0].roles,id=roleDict["id"])
-            member=utils.get(self.self2.guilds[0].members,id=id)
+            member=self.self2.guilds[0].fetch_member(id)
             if balance>=roleDict["price"]:
                 await self.self2.iEconomy.add(id,roleDict["price"]*-1)
                 await member.add_roles(role)

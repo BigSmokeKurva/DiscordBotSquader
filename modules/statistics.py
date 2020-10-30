@@ -42,11 +42,12 @@ class Statistics:
         else:
             id,error=await self.self2.iChecks.validArgsCheck(authorID,channel,args)
         if not error:
-            member=utils.get(self.self2.guilds[0].members,id=id)
+            member=await self.self2.guilds[0].fetch_member(id)
             embed=Embed(colour=colour,title=self.self2.config._replics["statisticsTitle"].format(
                 user=member,
             ))
             # status
+            print(member.status)
             status=self.statuses[str(member.status)]
             # duel
             duelStat=await self.self2.iDuels.csv(id,item=["wins","loses"])

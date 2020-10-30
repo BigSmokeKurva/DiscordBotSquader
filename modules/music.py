@@ -39,8 +39,7 @@ class Music:
         print(args)
         args="".join(args)
         video=await self.download(args)
-        await channel.send(video.keys())
-        #self.voice.play(FFmpegPCMAudio(video[]))
+        await channel.send(video["webpage_url"])
 
 
 
@@ -48,11 +47,11 @@ class Music:
     async def download(self,args):
         print(type(args))
         if args.count("youtube.com"):
-            ytInfo=self.ytdl.extract_info(args,download=True)
+            ytInfo=self.ytdl.extract_info(args,download=False)
         else:
             #args=self.ytdl.extract_info(args,download=False)["id"]
             #print(self.ytdl.extract_info(args,download=False))
-            ytInfo=self.ytdl.extract_info(args,download=True)["entries"][0]
+            ytInfo=self.ytdl.extract_info(args,download=False)["entries"][0]
         return ytInfo
 
 
