@@ -15,6 +15,7 @@ class Events:
                     if await self.iLevels.levels(message):
                         if await self.iCommands.run_command(message):
                             log.info(f"{message.author.id}: {message.content}",extra=extra)
+                            await self.iTimeRoles.check(message.author) # проверка TimeRoles
             else: # личное сообщение боту
                 await message.channel.send(self.config._replics["messagePrivate"])
     async def on_ready(self):
@@ -26,8 +27,6 @@ class Events:
                 self.iServerStatus.update(),
                 self.iTimeVoice.voice(),
                 self.iNullCheck.check(),
-                self.iTimeRoles.check(),
-                self.iEconomy.rolesRewards(),
                 #self.iMusic.startup(),
                 )
     async def on_raw_reaction_add(self,payload):

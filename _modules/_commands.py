@@ -77,13 +77,4 @@ class Commands:
 ╚═╝░░╚═╝╚══════╝░╚═════╝░╚═╝░░╚═╝╚══════╝░╚════╝░╚═╝░░╚═╝
 """)
         elif command=="bs":
-            embed=Embed(colour=msg.author.colour)
-            embed.title="Информация о пользователе: @user#111"
-            embed.description="**Основная инфолрмация**\n**Дата регистрации:** 0.0.0\n**Присоединился:** 0.0.0\n**Роль:** Admin\n**Статус:** не беспокоить\n**Часов в войсе:** 999ч"
-            embed.add_field(name="**Дуэли**",value="**Победы:** 111\n**Поражения:** 111")
-            embed.add_field(name="**Уровень**",value="555")
-            embed.add_field(name="**Монет**",value="111")
-            embed.set_thumbnail(url=msg.author.avatar_url)
-            
-            
-            await channel.send(embed=embed)
+            print(self.self2.get_all_members())
